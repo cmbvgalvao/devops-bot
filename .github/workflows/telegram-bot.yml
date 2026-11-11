@@ -1,6 +1,7 @@
 # Learning-path Telegram bot
 # v4: one job instead of three; times are Lisbon all year (each message has a summer and a
 #     winter cron entry, and bot.py skips the one that doesn't apply). Supabase removed.
+# v5: VAULT_TOKEN (read-only on devops-vault) lets the bot read the daily logs.
 
 name: Telegram Daily Bot
 
@@ -46,6 +47,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          VAULT_TOKEN:        ${{ secrets.VAULT_TOKEN }}
           SCHEDULE:           ${{ github.event.schedule }}
           MESSAGE_TYPE:       ${{ github.event.inputs.message_type }}
         run: python bot.py

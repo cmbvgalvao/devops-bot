@@ -10,11 +10,12 @@ The bot was built in May 2026 for a 4-week DevOps course that never started. Fro
 - [x] Drop Supabase and the dashboard (the vault becomes the source of progress in sprint 2).
 - [x] Unit tests (`python -m unittest`) and a CI workflow that runs them on every push.
 
-## Sprint 2: progress from the vault
-- [ ] Carlos creates a fine-grained token with read-only access to `devops-vault` → repo secret `VAULT_TOKEN`.
-- [ ] Read `0 Daily Logs/YYYY-MM-DD.md`: study days this week, streak, hours per track (from the template's **Track** and **Hours studied today** fields).
-- [ ] Sunday check-in shows real numbers and the "What I need to revisit" items from the week's logs.
-- [ ] Evening nudge only if today's log doesn't exist yet.
+## Sprint 2 (2026-11-11): progress from the vault
+- [x] Carlos creates a fine-grained token with read-only access to `devops-vault` → repo secret `VAULT_TOKEN`.
+- [x] Read `0 Daily Logs/YYYY-MM-DD.md`: study days this week, streak, hours per track (from the template's **Track** and **Hours studied today** fields).
+- [x] Sunday check-in shows real numbers and the "What I need to revisit" items from the week's logs.
+- [x] Evening nudge only if today's log doesn't exist yet.
+- [x] Falls back to the plain messages if the vault can't be read; unit tests for the log parsing.
 
 ## Later
 - [ ] GitHub can delay scheduled runs by hours on quiet repos (seen: a 07:00 run arriving at 15:27). If it's a problem, trigger `workflow_dispatch` from an external scheduler.
