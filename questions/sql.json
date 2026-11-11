@@ -1,0 +1,16 @@
+[
+  ["SQL", "What is the difference between WHERE and HAVING?", "WHERE filters rows before grouping. HAVING filters groups after GROUP BY, so it can use aggregates like COUNT(*) or SUM()."],
+  ["SQL", "INNER JOIN vs LEFT JOIN: which rows does each return?", "INNER JOIN returns only rows with a match in both tables. LEFT JOIN returns every row from the left table, with NULLs where the right table has no match."],
+  ["SQL", "Write a query that finds email addresses that appear more than once in a users table.", "SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1;"],
+  ["SQL", "Why does WHERE col = NULL return nothing?", "NULL means unknown, so any comparison with = gives unknown, not true. Use IS NULL or IS NOT NULL."],
+  ["SQL", "COUNT(*) vs COUNT(column): what's the difference?", "COUNT(*) counts rows. COUNT(column) counts only rows where that column is not NULL."],
+  ["SQL", "You must UPDATE customer records in production. What is your safe routine?", "Run a SELECT with the same WHERE first and check the row count; wrap the change in a transaction (BEGIN … COMMIT, or ROLLBACK if the count is wrong); have a backup or the old values saved."],
+  ["SQL", "How do you list customers who have never placed an order?", "SELECT c.* FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL; (or WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id))."],
+  ["SQL", "In what order does a database logically process a SELECT query?", "FROM/JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT. That's why a SELECT alias can't be used in WHERE."],
+  ["SQL", "What does an index give you, and what does it cost?", "Faster lookups, joins and sorting on the indexed columns. The cost: extra storage and slower INSERT/UPDATE/DELETE, because the index must be updated too."],
+  ["SQL", "Primary key vs foreign key?", "A primary key uniquely identifies each row in its table (unique, not NULL). A foreign key is a column that references a primary key in another table, enforcing the relationship."],
+  ["SQL", "How would you get the second-highest salary?", "SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees); or SELECT DISTINCT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 1;"],
+  ["SQL", "UNION vs UNION ALL?", "UNION combines results and removes duplicates (slower). UNION ALL keeps every row, including duplicates."],
+  ["SQL", "What is a transaction, and what does ACID stand for?", "A group of statements that succeed or fail together. ACID: Atomicity (all or nothing), Consistency (rules hold), Isolation (concurrent transactions don't interfere), Durability (committed data survives a crash)."],
+  ["SQL", "A support ticket says a customer's balance is wrong. How do you start investigating in the database?", "Find the customer by id, then read the related transactions ordered by date, compare the sum with the stored balance, and look for duplicates or missing rows — read-only queries first, no changes until the cause is clear."]
+]

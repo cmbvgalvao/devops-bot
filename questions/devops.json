@@ -1,0 +1,112 @@
+[
+  [
+    "DevOps · Docker",
+    "What is the difference between a Docker image and a container?",
+    "An image is a read-only blueprint. A container is a running instance of that image with its own writable layer on top."
+  ],
+  [
+    "DevOps · Docker",
+    "What does each Dockerfile instruction do: `FROM`, `RUN`, `COPY`, `CMD`, `ENTRYPOINT`?",
+    "FROM sets the base image. RUN executes commands at build time. COPY adds files. CMD is the default command. ENTRYPOINT sets the executable that always runs."
+  ],
+  [
+    "DevOps · Docker",
+    "How do Docker volumes differ from bind mounts?",
+    "Volumes are managed by Docker and stored in Docker's storage area. Bind mounts link to a specific path on the host. Use volumes for production persistence."
+  ],
+  [
+    "DevOps · Docker",
+    "What is a multi-stage build and why would you use one?",
+    "A Dockerfile with multiple FROM statements. You build in a full image, then copy only the artifacts to a slim final image. Result: dramatically smaller production image."
+  ],
+  [
+    "DevOps · Docker",
+    "Explain bridge vs host network modes.",
+    "Bridge creates an isolated Docker network — containers talk via DNS. Host shares the host machine's network stack directly, no isolation."
+  ],
+  [
+    "DevOps · Kubernetes",
+    "What is a Pod and why is it the smallest deployable unit?",
+    "A Pod wraps one or more containers that share the same network and storage. Kubernetes schedules Pods, not individual containers."
+  ],
+  [
+    "DevOps · Kubernetes",
+    "What is the difference between a Deployment, a StatefulSet, and a DaemonSet?",
+    "Deployment: stateless apps, rolling updates. StatefulSet: stateful apps with stable identity. DaemonSet: one Pod per node (logging, monitoring)."
+  ],
+  [
+    "DevOps · Kubernetes",
+    "Name the four Service types and when to use each.",
+    "ClusterIP: internal only. NodePort: exposes via node port. LoadBalancer: cloud LB. ExternalName: DNS alias."
+  ],
+  [
+    "DevOps · Kubernetes",
+    "How does a rolling update work? How would you roll back?",
+    "Kubernetes gradually replaces old Pods. Roll back with: kubectl rollout undo deployment/<name>"
+  ],
+  [
+    "DevOps · Kubernetes",
+    "How would you debug a Pod stuck in CrashLoopBackOff?",
+    "kubectl describe pod → events. kubectl logs → app output. Common causes: wrong CMD, missing env var, failing health check."
+  ],
+  [
+    "DevOps · Terraform",
+    "What is Terraform state and why does it matter?",
+    "State maps your config to real cloud resources. Without it, Terraform can't know what already exists or plan changes."
+  ],
+  [
+    "DevOps · Terraform",
+    "What happens if you lose your Terraform state file?",
+    "Terraform loses track of everything it created. You'd have to import manually. This is why remote state with locking is critical."
+  ],
+  [
+    "DevOps · Terraform",
+    "Explain the plan → apply → destroy lifecycle.",
+    "plan previews changes. apply executes them. destroy removes all managed resources. Always plan before apply."
+  ],
+  [
+    "DevOps · Terraform",
+    "What is a Terraform module and when do you create one?",
+    "A reusable config package. Create one when you repeat the same infra pattern across environments."
+  ],
+  [
+    "DevOps · Terraform",
+    "What is state locking and how do you implement it?",
+    "Prevents concurrent apply runs. Use DynamoDB alongside your S3 remote backend."
+  ],
+  [
+    "DevOps · CI/CD",
+    "What are the typical stages of a CI/CD pipeline?",
+    "Source → Lint → Unit tests → Build → Security scan → Push artifact → Deploy staging → Deploy production."
+  ],
+  [
+    "DevOps · CI/CD",
+    "How do you store and use secrets in GitHub Actions?",
+    "Settings → Secrets. Reference as ${{ secrets.MY_SECRET }}. They are masked in all logs."
+  ],
+  [
+    "DevOps · CI/CD",
+    "What is the difference between Continuous Integration and Continuous Deployment?",
+    "CI automatically builds and tests on every commit. CD automatically deploys after tests pass. CI is a prerequisite for CD."
+  ],
+  [
+    "DevOps · CI/CD",
+    "What are the different trigger types for a GitHub Actions workflow?",
+    "push, pull_request, schedule (cron), workflow_dispatch (manual), repository_dispatch (API), release (on tag)."
+  ],
+  [
+    "DevOps · Scenario",
+    "Users are reporting 500 errors right after a new deployment. Walk through your troubleshooting.",
+    "1. Check dashboards. 2. kubectl logs on new pods. 3. Compare new vs previous spec. 4. Roll back if critical. 5. Root cause after service is restored."
+  ],
+  [
+    "DevOps · Scenario",
+    "Your application is experiencing a sudden traffic spike. How do you scale it?",
+    "Short term: HPA kicks in. Medium term: Cluster Autoscaler adds nodes. Long term: review resource limits and autoscaling policies."
+  ],
+  [
+    "DevOps · Scenario",
+    "Your EC2 instance was accidentally terminated. How does your IaC setup help you recover?",
+    "terraform plan shows the missing resource. terraform apply recreates it in minutes. This is the core value of IaC."
+  ]
+]

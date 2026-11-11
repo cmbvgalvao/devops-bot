@@ -1,43 +1,38 @@
-# DevOps Fast-Track — Telegram Reminder Bot
-# v3: bumped actions/checkout → v6, actions/setup-python → v6 (Node.js 24)
+# Learning-path Telegram bot
+# v4: one job instead of three; times are Lisbon all year (each message has a summer and a
+#     winter cron entry, and bot.py skips the one that doesn't apply). Supabase removed.
 
 name: Telegram Daily Bot
 
 on:
   schedule:
-    # All times are UTC. Lisbon is UTC+1 (summer) or UTC+0 (winter).
-
-    # 08:00 Lisbon → daily study reminder
-    - cron: "0 7 * * *"
-
-    # 09:00 Lisbon → interview question of the day
-    - cron: "0 8 * * *"
-
-    # 18:00 Lisbon on Sundays → weekly progress check-in
+    # 06:30 Lisbon — commute reminder + question of the day (summer, winter)
+    - cron: "30 5 * * *"
+    - cron: "30 6 * * *"
+    # 20:00 Lisbon — daily log nudge
+    - cron: "0 19 * * *"
+    - cron: "0 20 * * *"
+    # 18:00 Lisbon on Sundays — weekly check-in
     - cron: "0 17 * * 0"
+    - cron: "0 18 * * 0"
 
-  # Trigger any message type manually from the Actions tab
+  # Send one message type manually from the Actions tab
   workflow_dispatch:
     inputs:
       message_type:
         description: "Which message to send"
         required: true
-        default: "daily_reminder"
+        default: "morning"
         type: choice
         options:
-          - daily_reminder
-          - interview_question
-          - progress_checkin
+          - morning
+          - evening
+          - weekly
 
 jobs:
-
-  # ── Job 1: Daily study reminder ──────────────────────────────────────
-  daily-reminder:
-    name: Daily study reminder
+  send:
+    name: Send message
     runs-on: ubuntu-latest
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'schedule' && github.event.schedule == '0 7 * * *')
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -47,63 +42,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Send daily reminder
+      - name: Send
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
-          SUPABASE_URL:       ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY:       ${{ secrets.SUPABASE_KEY }}
-          MESSAGE_TYPE:       ${{ github.event.inputs.message_type || 'daily_reminder' }}
-        run: python bot.py
-
-
-  # ── Job 2: Interview question of the day ─────────────────────────────
-  interview-question:
-    name: Interview question of the day
-    runs-on: ubuntu-latest
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'schedule' && github.event.schedule == '0 8 * * *')
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Send interview question
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
-          SUPABASE_URL:       ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY:       ${{ secrets.SUPABASE_KEY }}
-          MESSAGE_TYPE:       "interview_question"
-        run: python bot.py
-
-
-  # ── Job 3: Weekly progress check-in (Sundays) ────────────────────────
-  progress-checkin:
-    name: Weekly progress check-in
-    runs-on: ubuntu-latest
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'schedule' && github.event.schedule == '0 17 * * 0')
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Send progress check-in
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
-          SUPABASE_URL:       ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY:       ${{ secrets.SUPABASE_KEY }}
-          MESSAGE_TYPE:       "progress_checkin"
+          SCHEDULE:           ${{ github.event.schedule }}
+          MESSAGE_TYPE:       ${{ github.event.inputs.message_type }}
         run: python bot.py
