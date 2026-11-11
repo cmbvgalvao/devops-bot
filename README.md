@@ -15,3 +15,5 @@ The question follows the current track by date: SQL refresh (to 24 Nov 2026), AW
 **Test it:** Actions → Telegram Daily Bot → Run workflow → choose a message. Unit tests: `python -m unittest discover -s tests` (also run by CI on every push).
 
 Plans: [BACKLOG.md](BACKLOG.md).
+
+License: [MIT](LICENSE).
