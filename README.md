@@ -1,4 +1,4 @@
-# devops-bot
+# learning-path-bot
 
 A Telegram bot that keeps a personal learning path on track. GitHub Actions runs it on a schedule; no server.
 
